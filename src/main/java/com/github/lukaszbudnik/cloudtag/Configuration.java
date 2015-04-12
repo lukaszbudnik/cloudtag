@@ -1,3 +1,12 @@
+/**
+ * Copyright (C) 2015 Łukasz Budnik <lukasz.budnik@gmail.com>
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ */
 package com.github.lukaszbudnik.cloudtag;
 
 import com.google.inject.Inject;
@@ -8,7 +17,9 @@ import javax.inject.Singleton;
 @Singleton
 public class Configuration {
 
-    public static Integer DEFAULT_ZOOKEEPER_PORT = 2181;
+    public static final Boolean DEFAULT_USE_PUBLIC_IP = Boolean.FALSE;
+    public static final Integer DEFAULT_ZOOKEEPER_PORT = 2181;
+    public static final Integer DEFAULT_ASYNC_INTERVAL_SECONDS = 60;
 
     @Inject
     @Named("cloudtag.provider")
@@ -40,15 +51,15 @@ public class Configuration {
 
     @Inject(optional = true)
     @Named("cloudtag.usePublicIp")
-    private Boolean usePublicIp;
+    private Boolean usePublicIp = Boolean.FALSE;
 
     @Inject(optional = true)
     @Named("cloudtag.zookeeperPort")
-    private Integer zookeeperPort;
+    private Integer zookeeperPort = DEFAULT_ZOOKEEPER_PORT;
 
-    public boolean usePublicIp() {
-        return Boolean.TRUE.equals(usePublicIp);
-    }
+    @Inject(optional = true)
+    @Named("cloudtag.asyncIntervalSeconds")
+    private Integer asyncIntervalSeconds = DEFAULT_ASYNC_INTERVAL_SECONDS;
 
     public boolean useQualifier() {
         return qualifierName != null && !qualifierName.isEmpty()
@@ -120,10 +131,19 @@ public class Configuration {
     }
 
     public Integer getZookeeperPort() {
-        return zookeeperPort != null ? zookeeperPort : DEFAULT_ZOOKEEPER_PORT;
+        return zookeeperPort;
     }
 
     public void setZookeeperPort(Integer zookeeperPort) {
         this.zookeeperPort = zookeeperPort;
     }
+
+    public Integer getAsyncIntervalSeconds() {
+        return asyncIntervalSeconds;
+    }
+
+    public void setAsyncIntervalSeconds(Integer asyncIntervalSeconds) {
+        this.asyncIntervalSeconds = asyncIntervalSeconds;
+    }
+
 }

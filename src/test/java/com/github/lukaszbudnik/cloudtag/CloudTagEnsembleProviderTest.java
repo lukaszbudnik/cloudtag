@@ -20,16 +20,15 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import java.util.Collections;
 import java.util.Set;
 
-public class AsyncCloudTagEnsembleProviderTest {
+public class CloudTagEnsembleProviderTest {
 
     private static Injector injector;
 
     @BeforeClass
     public static void setupClass() {
-        injector = Guice.createInjector(new CloudTagPropertiesModule("/cloudtag.properties"), new AbstractModule() {
+        injector = Guice.createInjector(new CloudTagPropertiesModule("/cloudtag_without_optionals.properties"), new AbstractModule() {
             @Override
             protected void configure() {
                 requestInjection(this);
@@ -41,25 +40,19 @@ public class AsyncCloudTagEnsembleProviderTest {
             @Provides
             public ConnectionStringBuilder connectionStringBuilder() {
                 NodeMetadata nodeMetadata1 = Mockito.mock(NodeMetadata.class);
-                Mockito.when(nodeMetadata1.getUserMetadata()).thenReturn(ImmutableMap.of(configuration.getTagName(),
-                        configuration.getTagValue(), configuration.getQualifierName(), configuration.getQualifierValue()));
+                Mockito.when(nodeMetadata1.getUserMetadata()).thenReturn(ImmutableMap.of(configuration.getTagName(), configuration.getTagValue()));
                 Mockito.when(nodeMetadata1.getPublicAddresses()).thenReturn(ImmutableSet.of("123.123.123.123"));
+                Mockito.when(nodeMetadata1.getPrivateAddresses()).thenReturn(ImmutableSet.of("10.0.0.123"));
 
                 NodeMetadata nodeMetadata2 = Mockito.mock(NodeMetadata.class);
-                Mockito.when(nodeMetadata2.getUserMetadata()).thenReturn(ImmutableMap.of(configuration.getTagName(),
-                        configuration.getTagValue(), configuration.getQualifierName(), configuration.getQualifierValue()));
+                Mockito.when(nodeMetadata2.getUserMetadata()).thenReturn(ImmutableMap.of(configuration.getTagName(), configuration.getTagValue()));
                 Mockito.when(nodeMetadata2.getPublicAddresses()).thenReturn(ImmutableSet.of("124.124.124.124"));
+                Mockito.when(nodeMetadata2.getPrivateAddresses()).thenReturn(ImmutableSet.of("10.0.0.124"));
 
                 final Set nodes = Sets.newHashSet(nodeMetadata1, nodeMetadata2);
 
                 ConnectionStringBuilder connectionStringBuilder = new ConnectionStringBuilder(configuration) {
-                    private int counter = 0;
-
                     Set<? extends ComputeMetadata> listNodes() {
-                        if (counter == 0) {
-                            counter = counter + 1;
-                            return Collections.emptySet();
-                        }
                         return nodes;
                     }
                 };
@@ -71,25 +64,15 @@ public class AsyncCloudTagEnsembleProviderTest {
 
     @Test
     public void shouldReturnConnectionString() throws Exception {
-        AsyncCloudTagEnsembleProvider ensembleProvider = injector.getInstance(AsyncCloudTagEnsembleProvider.class);
+        CloudTagEnsembleProvider ensembleProvider = injector.getInstance(CloudTagEnsembleProvider.class);
         ensembleProvider.start();
 
         String connectionString = ensembleProvider.getConnectionString();
 
-        // listing all nodes usually takes some time and first call returns null
-        Assert.assertNull(connectionString);
-
-        // give the async cloud tag ensemble provider some time...
-        // for my AWS cloud env it really takes that long...
-        Thread.sleep(10 * 1000);
-
-        // and check now, the connection string should be already set in the background
-        connectionString = ensembleProvider.getConnectionString();
-
         ensembleProvider.close();
 
-        Assert.assertTrue(connectionString.contains("123.123.123.123:2181"));
-        Assert.assertTrue(connectionString.contains("124.124.124.124:2181"));
+        Assert.assertTrue(connectionString.contains("10.0.0.123:2181"));
+        Assert.assertTrue(connectionString.contains("10.0.0.124:2181"));
     }
 
 }
