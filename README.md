@@ -1,8 +1,5 @@
-<<<<<<< Updated upstream
-# CloudTag [![Build Status](https://travis-ci.org/lukaszbudnik/cloudtag.svg?branch=refactoring-and-extended-test-coverage)](https://travis-ci.org/lukaszbudnik/cloudtag) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.lukaszbudnik.cloudtag/cloudtag/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/com.github.lukaszbudnik.cloudtag/cloudtag)
-=======
-# CloudTag [![Build Status](https://travis-ci.org/lukaszbudnik/cloudtag.svg?branch=refactoring-and-extended-test-coverage)](https://travis-ci.org/lukaszbudnik/cloudtag) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.lukaszbudnik.cloudtag/cludtag/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/com.github.lukaszbudnik.cloudtag/cloudtag)
->>>>>>> Stashed changes
+# CloudTag [![Build Status](https://travis-ci.org/lukaszbudnik/cloudtag.svg?branch=master)](https://travis-ci.org/lukaszbudnik/cloudtag) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.lukaszbudnik.cloudtag/cludtag/badge.svg?style=flat)](https://maven-badges.herokuapp.com/maven-central/com.github.lukaszbudnik.cloudtag/cloudtag)
+
 CloudTag is a Curator's `EnsembleProvider` implementation which returns a connection string based on cloud servers with matching tags.
 
 The idea is simple, CloudTag lists all nodes in your cloud and, based on tag name and its value, filters nodes which
@@ -47,8 +44,6 @@ but just in case, please mind that jclouds' `UserMetaData` is mapped to differen
 
 In theory every jclouds provider will work with CloudTag, but I didn't test them all.
 
-<<<<<<< Updated upstream
-=======
 # Test/dev/local provider
 
 You can also setup CloudTag for a test/dev/local environment using a single server provider configuration:
@@ -63,7 +58,6 @@ cloudtaq.singleServer.address=192.168.99.100
 cloudtag.singleServer.port=32773
 ```
 
->>>>>>> Stashed changes
 # EnsembleProvider implementations
 
 There are two Curator's `EnsembleProvider` implementations:
