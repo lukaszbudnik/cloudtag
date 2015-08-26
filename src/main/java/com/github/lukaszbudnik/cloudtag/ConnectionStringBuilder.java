@@ -39,12 +39,16 @@ public class ConnectionStringBuilder {
         computeService = computeServiceContext.getComputeService();
     }
 
-    // this method is mocked in unit tests
     Set<? extends ComputeMetadata> listNodes() {
         return computeService.listNodes();
     }
 
     public String getConnectionString() {
+
+        if (configuration.useSingleServer()) {
+            return configuration.getSingleServerAddress() + ":" + configuration.getSingleServerPort();
+        }
+
         Set<? extends ComputeMetadata> nodes = listNodes();
         FluentIterable<String> connectionStrings = FluentIterable
                 .from(nodes)
