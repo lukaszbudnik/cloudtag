@@ -51,14 +51,16 @@ task javadocJar(type: Jar) {
 }
 
 task printTestErrors {
-    def xmlReports = new File("${buildDir}/test-results")
-    if (xmlReports.exists()) {
-        xmlReports.eachFileMatch(groovy.io.FileType.FILES, ~/TEST\-.*\.xml/) {
-            def testsuite = new groovy.util.XmlParser().parse(it)
-            testsuite.testcase.findAll {
-                it.failure.size() > 0
-            }.each {
-                println it
+    if (System.getenv().containsKey("TRAVIS")) {
+        def xmlReports = new File("${buildDir}/test-results")
+        if (xmlReports.exists()) {
+            xmlReports.eachFileMatch(groovy.io.FileType.FILES, ~/TEST\-.*\.xml/) {
+                def testsuite = new groovy.util.XmlParser().parse(it)
+                testsuite.testcase.findAll {
+                    it.failure.size() > 0
+                }.each {
+                    println it
+                }
             }
         }
     }
@@ -96,7 +98,7 @@ uploadArchives {
                 packaging 'jar'
                 // optionally artifactId can be defined here
                 description 'CloudTag is a Curator ensemble provider which returns connection string based on cloud servers with matching tags.'
-                url 'https://github.com/lukaszbudnik/jelvis'
+                url 'https://github.com/lukaszbudnik/cloudtag'
 
                 scm {
                     connection 'scm:git:git@github.com:lukaszbudnik/cloudtag.git'

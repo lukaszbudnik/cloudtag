@@ -17,6 +17,7 @@ import javax.inject.Singleton;
 @Singleton
 public class Configuration {
 
+    public static final String SINGLE_SERVER_PROVIDER = "single-server";
     public static final Boolean DEFAULT_USE_PUBLIC_IP = Boolean.FALSE;
     public static final Integer DEFAULT_ZOOKEEPER_PORT = 2181;
     public static final Integer DEFAULT_ASYNC_INTERVAL_SECONDS = 60;
@@ -61,9 +62,21 @@ public class Configuration {
     @Named("cloudtag.asyncIntervalSeconds")
     private Integer asyncIntervalSeconds = DEFAULT_ASYNC_INTERVAL_SECONDS;
 
+    @Inject(optional = true)
+    @Named("cloudtaq.singleServer.address")
+    private String singleServerAddress;
+
+    @Inject(optional = true)
+    @Named("cloudtag.singleServer.port")
+    private Integer singleServerPort;
+
     public boolean useQualifier() {
         return qualifierName != null && !qualifierName.isEmpty()
                 && qualifierValue != null && !qualifierValue.isEmpty();
+    }
+
+    public boolean useSingleServer() {
+        return provider.equals(SINGLE_SERVER_PROVIDER);
     }
 
     public String getProvider() {
@@ -146,4 +159,19 @@ public class Configuration {
         this.asyncIntervalSeconds = asyncIntervalSeconds;
     }
 
+    public String getSingleServerAddress() {
+        return singleServerAddress;
+    }
+
+    public void setSingleServerAddress(String singleServerAddress) {
+        this.singleServerAddress = singleServerAddress;
+    }
+
+    public Integer getSingleServerPort() {
+        return singleServerPort;
+    }
+
+    public void setSingleServerPort(Integer singleServerPort) {
+        this.singleServerPort = singleServerPort;
+    }
 }
