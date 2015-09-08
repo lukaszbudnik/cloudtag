@@ -35,8 +35,10 @@ public class ConnectionStringBuilder {
     }
 
     public void start() {
-        ComputeServiceContext computeServiceContext = ContextBuilder.newBuilder(configuration.getProvider()).credentials(configuration.getIdentity(), configuration.getCredential()).build(ComputeServiceContext.class);
-        computeService = computeServiceContext.getComputeService();
+        if (!configuration.useSingleServer()) {
+            ComputeServiceContext computeServiceContext = ContextBuilder.newBuilder(configuration.getProvider()).credentials(configuration.getIdentity(), configuration.getCredential()).build(ComputeServiceContext.class);
+            computeService = computeServiceContext.getComputeService();
+        }
     }
 
     Set<? extends ComputeMetadata> listNodes() {
