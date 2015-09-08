@@ -11,7 +11,7 @@ targetCompatibility = JavaVersion.VERSION_1_6
 
 group = 'com.github.lukaszbudnik.cloudtag'
 archivesBaseName = 'cloudtag'
-version = '1.2'
+version = '1.1.1'
 
 repositories {
     mavenCentral()
@@ -22,11 +22,7 @@ dependencies {
     compile 'org.apache.jclouds.provider:aws-ec2:1.9.1'
     compile 'org.apache.jclouds.provider:rackspace-cloudservers-us:1.9.1'
     compile 'org.apache.jclouds.provider:rackspace-cloudservers-uk:1.9.1'
-    // jclouds cannot be upgraded to guice 4.0 because of dependency on rocoto
-    // guice-properties-el is using guice 4.0 - exclude it and it will fallback to 3.0
-    compile('com.github.lukaszbudnik.guice-properties-el:guice-properties-el:1.0.0') {
-        exclude module: 'guice'
-    }
+    compile 'com.github.lukaszbudnik.guice-properties-el:guice-properties-el:1.1.0'
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-all:1.10.19'
