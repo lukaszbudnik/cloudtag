@@ -75,17 +75,12 @@ public class AsyncCloudTagEnsembleProviderTest {
         AsyncCloudTagEnsembleProvider ensembleProvider = injector.getInstance(AsyncCloudTagEnsembleProvider.class);
         ensembleProvider.start();
 
-        String connectionString = ensembleProvider.getConnectionString();
-
-        // listing all nodes usually takes some time and first call returns null
-        Assert.assertNull(connectionString);
-
         // give the async cloud tag ensemble provider some time...
         // for my AWS cloud env it really takes that long...
         Thread.sleep(10 * 1000);
 
         // and check now, the connection string should be already set in the background
-        connectionString = ensembleProvider.getConnectionString();
+        String connectionString = ensembleProvider.getConnectionString();
 
         ensembleProvider.close();
 
