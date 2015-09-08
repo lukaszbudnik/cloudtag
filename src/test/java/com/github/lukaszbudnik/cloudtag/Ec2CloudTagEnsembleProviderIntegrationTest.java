@@ -9,6 +9,7 @@
  */
 package com.github.lukaszbudnik.cloudtag;
 
+import com.github.lukaszbudnik.gpe.PropertiesElResolverModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import org.junit.Assert;
@@ -22,8 +23,8 @@ public class Ec2CloudTagEnsembleProviderIntegrationTest {
     private static Injector injector;
 
     @BeforeClass
-    public static void setupClass() {
-        injector = Guice.createInjector(new CloudTagPropertiesModule("/cloudtag_aws.properties"));
+    public static void setupClass() throws Exception {
+        injector = Guice.createInjector(new PropertiesElResolverModule("/cloudtag_aws.properties"));
     }
 
     @Test

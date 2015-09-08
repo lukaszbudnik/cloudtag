@@ -9,6 +9,7 @@
  */
 package com.github.lukaszbudnik.cloudtag;
 
+import com.github.lukaszbudnik.gpe.PropertiesElResolverModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import org.junit.Assert;
@@ -27,8 +28,8 @@ public class ConfigurationTest {
     }
 
     @Test
-    public void shouldReturnDefaultsWhenCreatedUsingInjector() {
-        Injector injector = Guice.createInjector(new CloudTagPropertiesModule("/cloudtag_without_optionals.properties"));
+    public void shouldReturnDefaultsWhenCreatedUsingInjector() throws Exception {
+        Injector injector = Guice.createInjector(new PropertiesElResolverModule("/cloudtag_without_optionals.properties"));
 
         Configuration configuration = injector.getInstance(Configuration.class);
 

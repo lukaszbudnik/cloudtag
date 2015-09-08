@@ -9,6 +9,7 @@
  */
 package com.github.lukaszbudnik.cloudtag;
 
+import com.github.lukaszbudnik.gpe.PropertiesElResolverModule;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
@@ -27,8 +28,8 @@ public class CloudTagEnsembleProviderTest {
     private static Injector injector;
 
     @BeforeClass
-    public static void setupClass() {
-        injector = Guice.createInjector(new CloudTagPropertiesModule("/cloudtag_without_optionals.properties"), new AbstractModule() {
+    public static void setupClass() throws Exception {
+        injector = Guice.createInjector(new PropertiesElResolverModule("/cloudtag_without_optionals.properties"), new AbstractModule() {
             @Override
             protected void configure() {
                 requestInjection(this);
